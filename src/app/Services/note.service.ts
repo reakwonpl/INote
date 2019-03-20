@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Storage} from '@ionic/storage';
+import { Note } from 'src/models/noteModel';
 ///https://ionicframework.com/docs/building/storage
 
 @Injectable({
@@ -7,17 +8,23 @@ import {Storage} from '@ionic/storage';
 })
 export class NoteService {
 
-  //localy dummy not db
-  private notes: {title:string}[] = [];
-  constructor() { }
+  
+  private notes: Note[] =[];
+  constructor(public storage:Storage) { }
 
-  saveNote(note: {title:string})
+  saveNote(note:Note)
   {
+    note.createDate = Date.now();    
     this.notes.push(note);
+    this.storage.set('notes',this.notes);
   }
 
   getAllNotes()
   {
-    return this.notes.slice(0);
+    
+    return this.storage.get('notes').then(
+      (notes) => {this.notes == null ? []: notes;
+      return this.notes.slice(0);}      
+    );
   }
 }

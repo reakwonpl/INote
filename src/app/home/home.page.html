@@ -8,7 +8,7 @@
 
 <ion-content>
   <ion-list>
-    <ion-item (click)="clicked()" *ngFor="let note of notes">
+    <ion-item (click)="clicked()" *ngFor="let note of notes | async">
       {{note.title}}
     </ion-item>
   </ion-list>
